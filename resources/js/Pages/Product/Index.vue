@@ -1,10 +1,11 @@
 <script setup>
-import { Search, Plus } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Search, Plus } from 'lucide-vue-next';
 import { Link, Head, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -59,6 +60,16 @@ const destroyProduct = () => {
     });
 };
 
+/**
+ * Truncate product description - helper
+ */
+const truncateProductDescription = (description) => {
+  if (! description || ! String(description).trim()) return '-';
+
+  const str = String(description).trim();
+  return str.length > 30 ? `${str.slice(0, 30)}...` : str;
+}
+
 // Debounce like pro - lodash? : ")
 let timeout = null;
 watch(search, () => {
@@ -109,6 +120,7 @@ onUnmounted(() => {
                     <TableHeader className="bg-gray-50">
                         <TableRow className="border-b border-gray-200 hover:bg-transparent">
                             <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Product name</TableHead>
+                            <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</TableHead>
                             <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Price (PLN)</TableHead>
                             <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">In stock</TableHead>
                             <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Rank</TableHead>
@@ -118,6 +130,18 @@ onUnmounted(() => {
                     <TableBody>
                         <TableRow v-for="product in products.data" :key="product.id" className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                             <TableCell className="py-4 px-6 text-sm text-gray-700">{{ product.name }}</TableCell>
+                            <TableCell className="py-4 px-6 text-sm text-gray-700">
+                                <TooltipProvider>
+                                    <Tooltip>
+                                    <TooltipTrigger as-child>
+                                        <span>{{ truncateProductDescription(product.description) }}</span>
+                                    </TooltipTrigger>
+                                    <TooltipContent v-if="product.description && product.description.length > 20" class="bg-gray-800 text-white p-2 rounded">
+                                        {{ product.description }}
+                                    </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </TableCell>
                             <TableCell className="py-4 px-6 text-center text-sm text-gray-700 font-medium">{{ product.price }} PLN</TableCell>
                             <TableCell className="py-4 px-6 text-center">
                                 <span v-if="product.stock > 10" className="px-3 py-1 text-xs rounded-md bg-green-100 text-green-800 font-medium">
