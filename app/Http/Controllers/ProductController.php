@@ -29,6 +29,14 @@ final class ProductController extends Controller
 	}
 
 	/**
+	 * Show single product.
+	 */
+	public function show(Product $product)
+	{
+		return Inertia::render('Product/Show', ['product' => $product]);
+	}
+
+	/**
 	 * Show the form for creating new product.
 	 */
 	public function create()

@@ -129,7 +129,11 @@ onUnmounted(() => {
                     </TableHeader>
                     <TableBody>
                         <TableRow v-for="product in products.data" :key="product.id" className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <TableCell className="py-4 px-6 text-sm text-gray-700">{{ product.name }}</TableCell>
+                            <TableCell className="py-4 px-6 text-sm text-gray-700">
+                                 <Link :href="route('products.show', product.id)" className="cursor-pointer text-indigo-500 hover:text-indigo-700">
+                                    {{ product.name }}
+                                </Link>
+                            </TableCell>
                             <TableCell className="py-4 px-6 text-sm text-gray-700">
                                 <TooltipProvider>
                                     <Tooltip>
@@ -142,7 +146,7 @@ onUnmounted(() => {
                                     </Tooltip>
                                 </TooltipProvider>
                             </TableCell>
-                            <TableCell className="py-4 px-6 text-center text-sm text-gray-700 font-medium">{{ product.price }} PLN</TableCell>
+                            <TableCell className="py-4 px-6 text-center text-sm text-gray-700 font-medium">{{ Number(product.price).toFixed(2) }} PLN</TableCell>
                             <TableCell className="py-4 px-6 text-center">
                                 <span v-if="product.stock > 10" className="px-3 py-1 text-xs rounded-md bg-green-100 text-green-800 font-medium">
                                     {{ product.stock }} in stock
