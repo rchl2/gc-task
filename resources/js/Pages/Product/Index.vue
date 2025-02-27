@@ -136,7 +136,7 @@ onUnmounted(() => {
                                     <TooltipTrigger as-child>
                                         <span>{{ truncateProductDescription(product.description) }}</span>
                                     </TooltipTrigger>
-                                    <TooltipContent v-if="product.description && product.description.length > 20" class="bg-gray-800 text-white p-2 rounded">
+                                    <TooltipContent v-if="product.description && product.description.length > 30" class="bg-gray-800 text-white p-2 rounded">
                                         {{ product.description }}
                                     </TooltipContent>
                                     </Tooltip>
