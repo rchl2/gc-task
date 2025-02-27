@@ -1,11 +1,13 @@
 <script setup>
+import { Terminal } from 'lucide-vue-next';
 import Checkbox from '@/Components/Checkbox.vue';
+import TextInput from '@/Components/TextInput.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 defineProps({
     canResetPassword: {
@@ -32,6 +34,13 @@ const submit = () => {
 <template>
     <GuestLayout>
         <Head title="Log in" />
+
+        <Alert class="mb-4 p-4 border">
+            <AlertTitle class="font-semibold text-base">Login credentials</AlertTitle>
+            <AlertDescription>
+                <span>E-mail: test@example.com | Password: password</span>
+            </AlertDescription>
+        </Alert>
 
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
             {{ status }}
