@@ -52,6 +52,13 @@ const props = defineProps({
                             </div>
             
                             <Separator />
+
+                            <div v-if="product.image" class="bg-gray-50 p-4 rounded-lg border flex">
+                                <img :src="'/storage/' + product.image" :alt="product.name" class="max-w-full h-auto rounded-lg border" style="max-height: 300px;">
+                            </div>
+                            <div v-else class="text-center text-gray-500">
+                                No image uploaded
+                            </div>
             
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="bg-gray-50 p-4 rounded-lg border">
