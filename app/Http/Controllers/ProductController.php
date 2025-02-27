@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Inertia\Inertia;
+use Inertia\Response;
+use App\Models\Product;
+use App\Queries\ProductQueries;
+use App\Jobs\Product\DestroyProduct;
+use App\Http\Requests\Product\SearchProductsRequest;
+
+final class ProductController extends Controller
+{
+	/**
+	 * Display index of products.
+	 */
+	public function index(SearchProductsRequest $request): Response
+	{
+		$products = ProductQueries::search($request->input('search'), $request->input('perPage'));
+
+		return Inertia::render('Product/Index', [
+			'products' => $products,
+			'filters'  => $request->only(['search', 'perPage']),
+		]);
+	}
+
+	/**
+	 * Destroy product.
+	 */
+	public function destroy(Product $product)
+	{
+		// Dispatch job to destroy product.
+		$this->dispatchSync(new DestroyProduct($product));
+
+		// Redirect user.
+		return Inertia::location(route('products.index'));
+	}
+}

@@ -3,7 +3,7 @@
 namespace App\Queries;
 
 use App\Models\Product;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Contracts\Pagination\Paginator;
 
 final class ProductQueries
 {
@@ -11,13 +11,24 @@ final class ProductQueries
 	 * Get the latest products with pagination.
 	 *
 	 * @param int $perPage number of products per page
-	 *
-	 * @return \Illuminate\Contracts\Pagination\Paginator
 	 */
-	public static function latestPaginated(int $perPage = 15): Paginator
+	public static function latestPaginated(int $perPage = 10): Paginator
 	{
 		return Product::latest('created_at')
 			->simplePaginate($perPage);
+	}
+
+	/**
+	 * Search through products.
+	 */
+	public static function search(?string $phrase, int $perPage = 5): Paginator
+	{
+		return Product::query()
+			->when($phrase, function ($query, $phrase) {
+				$query->where('name', 'like', "%{$phrase}%");
+			})
+			->latest('created_at')
+			->paginate($perPage);
 	}
 
 	/**
