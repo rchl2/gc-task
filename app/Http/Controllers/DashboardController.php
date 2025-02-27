@@ -19,7 +19,7 @@ final class DashboardController extends Controller
 	{
 		$products = ProductQueries::search($request->input('search'), $request->input('perPage'));
 
-		return Inertia::render('Welcome', [
+		return Inertia::render('PublicProducts', [
 			'products' => $products,
 			'canLogin' => Route::has('login'),
 			'filters'  => $request->only(['search', 'perPage']),
