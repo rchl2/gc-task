@@ -44,7 +44,11 @@ Tools/bundlers: Vite, Prettier, Eslint
    ```
    php artisan migrate
    ```
-9. Build frontend assets:
+9. Seed the database with sample data (users and products):
+   ```
+   php artisan db:seed
+   ```
+10. Build frontend assets:
    ```
    npm run dev
    ```
@@ -80,15 +84,19 @@ This option works on macOS, Windows, and Linux.
    ```
    php artisan migrate
    ```
-8. Build frontend assets (in one terminal):
+8. Seed the database with sample data (users and products):
+   ```
+   php artisan db:seed
+   ```
+9. Build frontend assets (in one terminal):
    ```
    npm run dev
    ```
-9. Start the PHP development server (in another terminal):
+10. Start the PHP development server (in another terminal):
    ```
    php artisan serve
    ```
-10. Access the site at `http://localhost:8000`
+11. Access the site at `http://localhost:8000`
 
 ## Additional Notes
 
