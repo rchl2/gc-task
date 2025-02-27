@@ -1,13 +1,13 @@
 <script setup>
+import { Search, Plus } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
-import { Search } from 'lucide-vue-next';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link, Head, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 const props = defineProps({
 	products: { type: Object, default: () => ({ data: [], from: null, to: null, total: 0, prev_page_url: null, next_page_url: null, current_page: 1 }) },
@@ -84,11 +84,11 @@ onUnmounted(() => {
                 <div class="flex items-center gap-2 mb-6">
                     <div class="relative flex-1">
                         <Search class="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input v-model="search" type="text" placeholder="Search products.." class="pl-8 pr-4 h-12 w-full border rounded-lg bg-white shadow-sm" />
+                        <Input v-model="search" type="text" placeholder="Search products.." class="pl-8 pr-4 h-10 w-full border rounded-lg bg-white shadow-sm" />
                     </div>
 
                     <Select v-model="perPage" @update:model-value="filterProducts">
-                        <SelectTrigger class="w-36 h-12 py-2 border rounded-lg bg-white shadow-sm hover:border-gray-300">
+                        <SelectTrigger class="w-36 h-10 py-2 border rounded-lg bg-white shadow-sm hover:border-gray-300">
                             <SelectValue placeholder="Per page" />
                         </SelectTrigger>
 
@@ -98,6 +98,11 @@ onUnmounted(() => {
                             <SelectItem value="20">20 per page</SelectItem>
                         </SelectContent>
                     </Select>
+
+                    <Link :href="route('products.create')" class="px-3 py-2 font-medium text-gray-700 bg-white border rounded-lg text-sm transition-colors shadow-sm">
+                        <Plus class="w-4 h-4 mr-1 mb-0.5 inline" />
+                        Add new product
+                    </Link>
                 </div>
 
                 <Table className="w-full bg-white rounded-lg border overflow-hidden">
@@ -106,6 +111,7 @@ onUnmounted(() => {
                             <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Product name</TableHead>
                             <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Price (PLN)</TableHead>
                             <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">In stock</TableHead>
+                            <TableHead className="py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Rank</TableHead>
                             <TableHead v-if="showActions" className="py-4 px-20 text-xs font-semibold text-gray-600 uppercase tracking-wider text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -121,6 +127,7 @@ onUnmounted(() => {
                                     Empty stock
                                 </span>
                             </TableCell>
+                            <TableCell className="py-4 px-6 text-center text-sm text-gray-700 font-medium">{{ product.rank }}</TableCell>
                             <TableCell v-if="showActions" className="py-3 px-6">
                                 <div className="flex items-center justify-end space-x-3">
                                     <Link :href="route('products.edit', product.id)" className="flex items-center text-xs border-gray-200 bg-white border px-4 py-1 rounded-md text-gray-700 cursor-pointer hover:bg-gray-50">
@@ -134,7 +141,7 @@ onUnmounted(() => {
                             </TableCell>
                         </TableRow>
                         <TableRow v-if="products.data.length === 0">
-                            <TableCell :colSpan="showActions ? 4 : 3" className="py-12 text-center">
+                            <TableCell :colSpan="showActions ? 5 : 4" className="py-12 text-center">
                                 <div className="flex flex-col items-center justify-center">
                                     <p className="text-gray-500 font-medium">Products list is empty</p>
                                     <p className="text-gray-400 text-sm mt-1">Add new products to the database to see it here</p>

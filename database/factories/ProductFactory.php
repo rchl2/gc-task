@@ -21,6 +21,7 @@ final class ProductFactory extends Factory
 			'description' => fake()->paragraph(1),
 			'price'       => fake()->randomFloat(1, 20, 30),
 			'stock'       => fake()->numberBetween(1, 100),
+			'rank'        => fake()->numberBetween(1, 20),
 			'image'       => null,
 		];
 	}

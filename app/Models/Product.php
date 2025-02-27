@@ -33,6 +33,7 @@ final class Product extends Model
 		return [
 			'price' => 'decimal:2',
 			'stock' => 'integer',
+			'rank'  => 'integer',
 		];
 	}
 }

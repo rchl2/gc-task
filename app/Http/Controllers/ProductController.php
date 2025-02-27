@@ -6,7 +6,9 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Product;
 use App\Queries\ProductQueries;
+use App\Jobs\Product\CreateProduct;
 use App\Jobs\Product\DestroyProduct;
+use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\SearchProductsRequest;
 
 final class ProductController extends Controller
@@ -22,6 +24,28 @@ final class ProductController extends Controller
 			'products' => $products,
 			'filters'  => $request->only(['search', 'perPage']),
 		]);
+	}
+
+	/**
+	 * Show the form  for creating new product.
+	 */
+	public function create()
+	{
+		return Inertia::render('Product/Create');
+	}
+
+	/**
+	 * Store product.
+	 *
+	 * @return void
+	 */
+	public function store(StoreProductRequest $request)
+	{
+		// Dispatch job to create product.
+		$product = $this->dispatchSync(new CreateProduct($request->validated()));
+
+		// Redirect user.
+		return Inertia::location(route('products.index'));
 	}
 
 	/**
