@@ -8,17 +8,6 @@ use Illuminate\Contracts\Pagination\Paginator;
 final class ProductQueries
 {
 	/**
-	 * Get the latest products with pagination.
-	 *
-	 * @param int $perPage number of products per page
-	 */
-	public static function latestPaginated(int $perPage = 10): Paginator
-	{
-		return Product::latest('created_at')
-			->simplePaginate($perPage);
-	}
-
-	/**
 	 * Search through products.
 	 */
 	public static function search(?string $phrase, int $perPage = 5): Paginator
