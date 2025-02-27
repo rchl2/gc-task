@@ -27,6 +27,8 @@ final class StoreProductRequest extends FormRequest
 			'price'       => ['required', 'numeric', 'min:0', 'regex:/^\d+(\.\d{1,2})?$/'],
 			'rank'        => ['required', 'integer', 'min:0'],
 			'stock'       => ['required', 'integer', 'min:0'],
+
+			'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
 		];
 	}
 }

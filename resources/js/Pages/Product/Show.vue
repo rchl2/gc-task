@@ -35,7 +35,7 @@ const props = defineProps({
                         <div class="flex items-center justify-between">
                             <div>
                                 <CardTitle class="text-xl">{{ product.name }}</CardTitle>
-                                <CardDescription class="mt-1">Product Details</CardDescription>
+                                <CardDescription class="mt-1">Product details</CardDescription>
                             </div>
 
                             <Badge class="px-4 py-2" :variant="product.stock > 0 ? 'default' : 'destructive'">

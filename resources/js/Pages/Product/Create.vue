@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Link, useForm } from '@inertiajs/vue3';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeftIcon, LoaderIcon } from 'lucide-vue-next';
+import { ArrowLeftIcon, LoaderIcon, ImageIcon } from 'lucide-vue-next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
@@ -14,8 +14,27 @@ const form = useForm({
     description: '',
     price: '',
     stock: '',
-    rank: ''
+    rank: '',
+    image: null
 });
+
+// Uploaded image
+const imagePreview = ref(null);
+
+// Handle image upload
+const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    form.image = file;
+    
+    // Preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        imagePreview.value = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+};
 
 // Client validation error bag
 const validationErrorBag = ref({});
@@ -52,8 +71,10 @@ const submit = () => {
     form.post(route('products.store'), {
         onSuccess: () => {
             form.reset();
+            imagePreview.value = nulll
             validationErrorBag.value = {};
-        }
+        },
+        forceFormData: true
     });
 };
 
@@ -103,6 +124,33 @@ const hasError = (field) => {
                                     <p v-if="hasError('description')" class="text-xs text-red-500">
                                         {{ getErrorMessage('description') }}
                                     </p>
+                                </div>
+
+                                <div class="space-y-1">
+                                    <Label for="image">Image</Label>
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div class="relative flex items-center justify-center h-40 border-2 border-dashed rounded-lg border-gray-300 p-4 mb-2" :class="{'border-gray-400': imagePreview}">
+                                            <div v-if="imagePreview" class="w-full h-full flex items-center justify-center">
+                                                <img :src="imagePreview" alt="preview" class="max-h-full max-w-full object-contain" />
+                                            </div>
+
+                                            <div v-else class="text-center">
+                                                <ImageIcon class="mx-auto h-10 w-10 text-gray-400" />
+                                                <p class="mt-2 text-sm text-gray-500">No image selected</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col justify-center">g
+                                        <Input id="image" type="file" accept="image/*" class="border cursor-pointer" @change="handleImageUpload" :class="{ 'border-red-500': hasError('image') }" />
+                                        <p class="mt-1 text-xs text-gray-500">
+                                            Formats: JPEG, JPG, PNG, GIF
+                                        </p>
+
+                                        <p v-if="hasError('image')" class="text-xs text-red-500">
+                                            {{ getErrorMessage('image') }}
+                                        </p>
+                                    </div>
                                 </div>
                                 
                                 <div class="grid grid-cols-3 gap-4">
