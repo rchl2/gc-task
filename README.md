@@ -50,7 +50,7 @@ Tools/bundlers: Vite, Prettier, Eslint
    ```
 10. Build frontend assets:
    ```
-   npm run dev
+   npm run build
    ```
 10. Access the site at the URL provided by Herd (typically `http://project-name.test`)
 
@@ -90,7 +90,7 @@ This option works on macOS, Windows, and Linux.
    ```
 9. Build frontend assets (in one terminal):
    ```
-   npm run dev
+   npm run build
    ```
 10. Start the PHP development server (in another terminal):
    ```
